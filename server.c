@@ -32,13 +32,20 @@ int setup_server_socket(void)
     // Clear the hints structure to avoid garbage values 
     memset(&hints, 0, sizeof hints);
 
-    // Allow either IPv4 or IPv6 addresses 
-    hints.ai_family = AF_UNSPEC;
+    /*
+       Force IPv6 socket creation.
+       This allows us to create a dual-stack server that can
+       accept both IPv6 and IPv4 clients.
+    */
+    hints.ai_family = AF_INET6;
 
     // Use TCP (stream socket)
     hints.ai_socktype = SOCK_STREAM;
 
-    //Indicate this socket will be used for binding (server-side) 
+    /*
+       AI_PASSIVE:
+       NULL node means bind to all local interfaces (::)
+    */
     hints.ai_flags = AI_PASSIVE;
 
     /*
@@ -54,10 +61,10 @@ int setup_server_socket(void)
     }
 
     /*
-       Loop through each address returned by getaddrinfo and attempt
-       to create and bind a socket until one succeeds.
+       Loop through returned addresses and attempt
+       to create and bind a socket.
     */
-    for (p = servinfo; p != NULL; p = p->ai_next) {
+        for (p = servinfo; p != NULL; p = p->ai_next) {
 
         /*
            socket():
@@ -75,6 +82,17 @@ int setup_server_socket(void)
            after the program restarts.
         */
         setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+        /*
+           Disable IPV6_V6ONLY so that this IPv6 socket
+           also accepts IPv4 connections as IPv4-mapped IPv6 addresses
+           This is the KEY setting that allows:
+           - IPv4-only clients
+           - IPv6-only clients
+           to connect to the same server.
+        */
+        int no = 0;
+        setsockopt(sockfd, IPPROTO_IPV6, IPV6_V6ONLY, &no, sizeof(no));
 
         /*
            bind():
