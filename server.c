@@ -196,10 +196,10 @@ void *handle_client(void *arg)
 
         /*
            send():
-           client_fd       → socket descriptor
-           response        → data to send to the client
-           strlen(response)→ number of bytes to send
-           flags (0)       → no special options
+           client_fd       - socket descriptor
+           response        - data to send to the client
+           strlen(response)- number of bytes to send
+           flags (0)       - no special options
         */
         send(client_fd, response, strlen(response), 0);
     }

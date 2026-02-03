@@ -59,9 +59,9 @@ int connect_to_server(char *hostname)
 
         /*
            connect():
-           sockfd         → socket file descriptor
-           p->ai_addr     → server address structure
-           p->ai_addrlen  → size of the address structure
+           sockfd         - socket file descriptor
+           p->ai_addr     - server address structure
+           p->ai_addrlen  - size of the address structure
         */
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
             close(sockfd);
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
     /* 
        connect_to_server():
-       argv[1] → IP address or hostname of the server to connect to
+       argv[1] - IP address or hostname of the server to connect to
        Returns a connected socket file descriptor
     */
     int sockfd = connect_to_server(argv[1]);
