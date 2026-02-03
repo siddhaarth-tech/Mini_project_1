@@ -15,7 +15,7 @@
 static int global_msg_count = 0;
 
 /*
- * Create and return a listening socket
+  Create and return a listening socket
  */
 int get_listener_socket(void)
 {
@@ -54,7 +54,7 @@ int get_listener_socket(void)
 }
 
 /*
- * Add a new fd to poll list
+  Add a new fd to poll list
  */
 void add_to_pfds(struct pollfd **pfds, int newfd,
                  int *fd_count, int *fd_size)
@@ -71,7 +71,7 @@ void add_to_pfds(struct pollfd **pfds, int newfd,
 }
 
 /*
- * Remove fd from poll list (O(1))
+  Remove fd from poll list (O(1))
  */
 void del_from_pfds(struct pollfd pfds[], int i, int *fd_count)
 {
@@ -80,7 +80,7 @@ void del_from_pfds(struct pollfd pfds[], int i, int *fd_count)
 }
 
 /*
- * Handle client data: ECHO + TIME + GLOBAL COUNT
+ Handle client data: ECHO + TIME + GLOBAL COUNT
  */
 void handle_client_data(struct pollfd *pfds, int *fd_count, int *i)
 {
